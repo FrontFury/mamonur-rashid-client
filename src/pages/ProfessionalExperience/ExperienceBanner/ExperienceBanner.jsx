@@ -1,14 +1,18 @@
 import React from "react";
 import { Sparkles } from "lucide-react";
-import homeBgImage from "../../../assets/ResearchBanner.jpg";
+// Replace this with your actual background image import path
+import experienceBgImage from "../../../assets/ExperienceBanner.jpg";
 
-const ResearchBanner = () => {
+const ExperienceBanner = () => {
   return (
     <div className="w-full bg-[#F8FAFC] rounded-t-xl md:rounded-t-3xl text-zinc-800 font-['Playfair_Display',serif]">
+      {/* ==========================================
+          HERO / BANNER SECTION
+      ========================================== */}
       <section
         className="relative min-h-[360px] md:min-h-[580px] bg-cover bg-center bg-no-repeat rounded-t-xl md:rounded-t-3xl overflow-hidden shadow-sm flex flex-col items-center justify-center text-center px-4 sm:px-8"
         style={{
-          backgroundImage: `url(${homeBgImage})`,
+          backgroundImage: `url(${experienceBgImage})`,
         }}
       >
         {/* Dark Overlay matching Home.jsx */}
@@ -17,20 +21,20 @@ const ResearchBanner = () => {
         {/* Banner Content */}
         <div className="relative z-10 flex flex-col items-center max-w-3xl mx-auto font-sans">
           
-          {/* Frosted Glass Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] sm:text-xs font-semibold text-amber-300 uppercase tracking-widest mb-4 shadow-sm">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Academic Contributions & Research Focus</span>
+          {/* Frosted Glass Capsule Badge */}
+          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-slate-900/50 backdrop-blur-xl border border-white/20 text-[11px] sm:text-xs font-bold text-[#Facc15] uppercase tracking-wider mb-5 shadow-lg">
+            <Sparkles className="w-4 h-4 text-[#Facc15]" />
+            <span>Academic Leadership & Professional Journey</span>
           </div>
 
           {/* Golden Serif Headline */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-serif text-amber-300 tracking-tight leading-tight mb-4 drop-shadow-sm">
-            Research & Publications
+            Teaching & Experience
           </h1>
 
           {/* Subtitle Tailored for Md. Mamonur Rashid */}
           <p className="text-slate-200 text-xs sm:text-sm md:text-base font-normal leading-relaxed max-w-2xl opacity-90 font-sans">
-            A scholar compilation by <strong className="text-white font-semibold">Md. Mamonur Rashid</strong> featuring peer-reviewed articles, financial research reviews, and insights into Islamic microfinance and banking methodologies.
+            Detailed career timeline of <strong className="text-white font-semibold">Md. Mamonur Rashid</strong> as Lecturer & Student Advisor (MBA Program) at DIIT, academic mentorship roles, and institutional contributions.
           </p>
 
         </div>
@@ -39,4 +43,4 @@ const ResearchBanner = () => {
   );
 };
 
-export default ResearchBanner;
+export default ExperienceBanner;

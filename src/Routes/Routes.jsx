@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import Home from "../pages/Home/Home/Home";
 import ResearchNPublications from "../pages/ResearchNPublications/ResearchNPublications/ResearchNPublications";
+import ProfessionalExperience from "../pages/ProfessionalExperience/ProfessionalExperience/ProfessionalExperience";
 
 
 export const router = createBrowserRouter([
@@ -16,6 +17,10 @@ export const router = createBrowserRouter([
       {
         path: "research-publications",
         element: <ResearchNPublications/>
+      },
+      {
+        path: "professional-experience",
+        element: <ProfessionalExperience/>
       },
     ],
   },
