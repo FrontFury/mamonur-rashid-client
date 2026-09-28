@@ -15,7 +15,7 @@ const SkillsBanner = () => {
         }}
       >
         {/* Dark Overlay matching Home.jsx */}
-        <div className="absolute inset-0 bg-[#0F172A]/60 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#0F172A]/80 backdrop-blur-[1px]" />
 
         {/* Banner Content */}
         <div className="relative z-10 flex flex-col items-center max-w-3xl mx-auto font-sans">
