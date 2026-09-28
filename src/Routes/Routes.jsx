@@ -10,6 +10,7 @@ import HonorsNAwards from "../pages/HonorsNAwards/HonorsNAwards/HonorsNAwards";
 import VoluntaryWork from "../pages/VoluntaryWork/VoluntaryWork/VoluntaryWork";
 import Gallery from "../pages/Gallery/Gallery/Gallery";
 import References from "../pages/References/References/References";
+import Contact from "../pages/Contact/Contact/Contact";
 
 
 export const router = createBrowserRouter([
@@ -56,6 +57,10 @@ export const router = createBrowserRouter([
       {
         path: "references",
         element: <References/>
+      },
+      {
+        path: "contact",
+        element: <Contact/>
       },
     ],
   },
