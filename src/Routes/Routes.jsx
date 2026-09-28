@@ -9,6 +9,7 @@ import Skills from "../pages/Skills/Skills/Skills";
 import HonorsNAwards from "../pages/HonorsNAwards/HonorsNAwards/HonorsNAwards";
 import VoluntaryWork from "../pages/VoluntaryWork/VoluntaryWork/VoluntaryWork";
 import Gallery from "../pages/Gallery/Gallery/Gallery";
+import References from "../pages/References/References/References";
 
 
 export const router = createBrowserRouter([
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "gallery",
         element: <Gallery/>
+      },
+      {
+        path: "references",
+        element: <References/>
       },
     ],
   },
