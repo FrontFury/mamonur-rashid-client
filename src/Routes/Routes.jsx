@@ -6,6 +6,7 @@ import ProfessionalExperience from "../pages/ProfessionalExperience/Professional
 import ProfessionalDevelopment from "../pages/ProfessionalDevelopment/ProfessionalDevelopment/ProfessionalDevelopment";
 import AcademicBackground from "../pages/AcademicBackground/AcademicBackground/AcademicBackground";
 import Skills from "../pages/Skills/Skills/Skills";
+import HonorsNAwards from "../pages/HonorsNAwards/HonorsNAwards/HonorsNAwards";
 
 
 export const router = createBrowserRouter([
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "skills",
         element: <Skills/>
+      },
+      {
+        path: "honors-awards",
+        element: <HonorsNAwards/>
       },
     ],
   },
