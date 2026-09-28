@@ -4,6 +4,7 @@ import Home from "../pages/Home/Home/Home";
 import ResearchNPublications from "../pages/ResearchNPublications/ResearchNPublications/ResearchNPublications";
 import ProfessionalExperience from "../pages/ProfessionalExperience/ProfessionalExperience/ProfessionalExperience";
 import ProfessionalDevelopment from "../pages/ProfessionalDevelopment/ProfessionalDevelopment/ProfessionalDevelopment";
+import AcademicBackground from "../pages/AcademicBackground/AcademicBackground/AcademicBackground";
 
 
 export const router = createBrowserRouter([
@@ -26,6 +27,10 @@ export const router = createBrowserRouter([
       {
         path: "professional-development",
         element: <ProfessionalDevelopment/>
+      },
+      {
+        path: "academic-background",
+        element: <AcademicBackground/>
       },
     ],
   },
