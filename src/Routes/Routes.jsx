@@ -3,6 +3,7 @@ import Main from "../Layout/Main";
 import Home from "../pages/Home/Home/Home";
 import ResearchNPublications from "../pages/ResearchNPublications/ResearchNPublications/ResearchNPublications";
 import ProfessionalExperience from "../pages/ProfessionalExperience/ProfessionalExperience/ProfessionalExperience";
+import ProfessionalDevelopment from "../pages/ProfessionalDevelopment/ProfessionalDevelopment/ProfessionalDevelopment";
 
 
 export const router = createBrowserRouter([
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "professional-experience",
         element: <ProfessionalExperience/>
+      },
+      {
+        path: "professional-development",
+        element: <ProfessionalDevelopment/>
       },
     ],
   },
