@@ -7,6 +7,7 @@ import ProfessionalDevelopment from "../pages/ProfessionalDevelopment/Profession
 import AcademicBackground from "../pages/AcademicBackground/AcademicBackground/AcademicBackground";
 import Skills from "../pages/Skills/Skills/Skills";
 import HonorsNAwards from "../pages/HonorsNAwards/HonorsNAwards/HonorsNAwards";
+import VoluntaryWork from "../pages/VoluntaryWork/VoluntaryWork/VoluntaryWork";
 
 
 export const router = createBrowserRouter([
@@ -41,6 +42,10 @@ export const router = createBrowserRouter([
       {
         path: "honors-awards",
         element: <HonorsNAwards/>
+      },
+      {
+        path: "csr-voluntary-work",
+        element: <VoluntaryWork/>
       },
     ],
   },
