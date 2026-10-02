@@ -1,115 +1,215 @@
-import React from "react";
-import { HeartHandshake, MapPin } from "lucide-react";
-
-const voluntaryData = [
-  {
-    id: 1,
-    title: "Youth Financial Literacy & Basic Accounting Workshop",
-    organization: "DIIT Social Action Cell",
-    period: "2023 - Present",
-    category: "Community Outreach",
-    description:
-      "Organizing pro-bono basic bookkeeping and micro-savings planning clinics for undergraduate youth and neighborhood micro-entrepreneurs.",
-    location: "Dhaka, Bangladesh",
-    image:
-      "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800", // Replace with your image asset
-  },
-  {
-    id: 2,
-    title: "Post-Flood Educational Aid & Textbook Distribution",
-    organization: "Voluntary Academic Forum",
-    period: "2022",
-    category: "Relief & Welfare",
-    description:
-      "Mobilized student volunteers to supply curriculum books, stationery, and emergency stipend funds to flood-affected students in eastern regional districts.",
-    location: "Sylhet & Cumilla Districts",
-    image:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=800", // Replace with your image asset
-  },
-  {
-    id: 3,
-    title: "Campus Voluntary Blood Donation & Health Camp",
-    organization: "Red Crescent & DIIT Club",
-    period: "Annual",
-    category: "Health Drive",
-    description:
-      "Serving as institutional faculty coordinator facilitating campus blood donation drives, health awareness seminars, and emergency donor databases.",
-    location: "DIIT Campus, Dhaka",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80&w=800", // Replace with your image asset
-  },
-];
+import React, { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../../hook/useAxiosSecure"; 
+import {
+  HeartHandshake,
+  Building2,
+  Calendar,
+  ZoomIn,
+  X,
+  AlertCircle,
+  Tag,
+  UserCheck,
+  Heart,
+} from "lucide-react";
 
 const VoluntaryWorkBody = () => {
+  const axiosSecure = useAxiosSecure();
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  // Fetch volunteer works from /volunteerings API endpoint
+  const {
+    data: volunteerData = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["volunteerings"],
+    queryFn: async () => {
+      const res = await axiosSecure.get("/volunteerings");
+      return res.data;
+    },
+  });
+
   return (
-    <div className="w-full bg-[#F8FAFC] py-12 px-4 sm:px-8 lg:px-16 xl:px-24 max-w-[1600px] mx-auto font-sans text-slate-800">
+    <div className="w-full bg-[#F8FAFC] py-16 px-4 sm:px-8 lg:px-16 xl:px-24 max-w-[1600px] mx-auto font-sans text-slate-800">
       
       {/* Header Section */}
-      <div className="pb-8 border-b border-slate-200/80 mb-10">
-        <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-slate-500 mb-2">
-          <HeartHandshake className="w-4 h-4 text-slate-500" />
-          <span>Civic Engagement</span>
+      <div className="relative pb-10 border-b border-slate-200/80 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-amber-600 mb-3">
+            <span className="p-1.5 bg-amber-100 rounded-lg">
+              <HeartHandshake className="w-4 h-4 text-amber-700" />
+            </span>
+            <span>Civic Engagement & CSR</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-slate-900 tracking-tight">
+            Voluntary Work & Community
+          </h2>
+          <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+            Translating leadership skills and personal commitment into grassroots community welfare programs, disaster relief operations, and social impact initiatives.
+          </p>
         </div>
-        <h2 className="text-3xl sm:text-4xl font-bold font-serif text-slate-900 tracking-tight">
-          CSR & Voluntary Work
-        </h2>
-        <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl">
-          Translating institutional resources and financial literacy into grassroots community welfare programs and youth mentorship.
-        </p>
+
+        {/* Dynamic Counter Badge */}
+        <div className="bg-slate-200/60 px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 border border-slate-200 self-start md:self-auto">
+          Total Initiatives: {volunteerData.length}
+        </div>
       </div>
+
+      {/* Loading Skeleton */}
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map((n) => (
+            <div
+              key={n}
+              className="bg-white rounded-3xl p-6 border border-slate-200/80 animate-pulse space-y-4"
+            >
+              <div className="h-52 bg-slate-200 rounded-2xl w-full" />
+              <div className="h-6 bg-slate-200 rounded w-3/4 mt-4" />
+              <div className="h-4 bg-slate-200 rounded w-1/2" />
+              <div className="h-16 bg-slate-100 rounded w-full mt-6" />
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Error State */}
+      {isError && (
+        <div className="p-6 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3 text-red-700 text-sm max-w-3xl mx-auto">
+          <AlertCircle className="w-5 h-5 shrink-0" />
+          <span>Failed to load volunteering data. {error?.message}</span>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!isLoading && !isError && volunteerData.length === 0 && (
+        <div className="p-10 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-sm max-w-3xl mx-auto">
+          No volunteering activities found.
+        </div>
+      )}
 
       {/* 3-Column Responsive Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
-        {voluntaryData.map((item) => (
+      {!isLoading && !isError && volunteerData.length > 0 && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-stretch">
+          {volunteerData.map((item) => (
+            <div
+              key={item._id}
+              className="group relative bg-white rounded-3xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-2xl hover:bg-gradient-to-b hover:from-amber-500/10 hover:via-white hover:to-white hover:ring-8 hover:ring-amber-500/10"
+            >
+              {/* Top Accent Ambient Glow */}
+              <div className="absolute inset-x-8 -top-[2px] h-1 bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10" />
+
+              <div>
+                {/* Image Container */}
+                <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-100 group/img">
+                  {item.image ? (
+                    <img
+                      src={item.image}
+                      alt={item.role}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-amber-50/50 flex items-center justify-center text-amber-600">
+                      <Heart className="w-12 h-12 opacity-30" />
+                    </div>
+                  )}
+
+                  {/* Zoom Preview Overlay button */}
+                  {item.image && (
+                    <button
+                      onClick={() =>
+                        setSelectedImage({
+                          url: item.image,
+                          title: item.role,
+                        })
+                      }
+                      className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white text-xs font-bold gap-2 backdrop-blur-[2px] z-10"
+                    >
+                      <ZoomIn className="w-4.5 h-4.5" /> View Photo
+                    </button>
+                  )}
+
+                  {/* Cause Badge Overlay at Bottom Right */}
+                  {item.cause && (
+                    <div className="absolute bottom-3.5 right-3.5 bg-slate-900/90 backdrop-blur-md text-amber-300 text-[10px] font-bold px-3 py-1.5 rounded-lg shadow-lg uppercase tracking-wider flex items-center gap-1.5 border border-slate-700/60 z-20 pointer-events-none">
+                      <Tag className="w-3 h-3 text-amber-400" />
+                      <span>{item.cause}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Card Body Content */}
+                <div className="p-6 sm:p-7">
+                  {/* Role Title */}
+                  <h3 className="text-xl font-bold font-serif text-slate-900 group-hover:text-amber-800 transition-colors duration-300 mb-3 leading-snug">
+                    {item.role}
+                  </h3>
+
+                  {/* Organization */}
+                  {item.organization && (
+                    <div className="flex items-center gap-2 text-xs font-bold text-slate-700 mb-2">
+                      <Building2 className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <span>{item.organization}</span>
+                    </div>
+                  )}
+
+                  {/* Description */}
+                  {item.description && (
+                    <p className="text-slate-600 text-xs sm:text-sm leading-relaxed mt-3">
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              {/* Bottom Footer Section: Date */}
+              <div className="px-6 sm:px-7 pb-6 pt-2 border-t border-slate-100 group-hover:border-amber-200/80 flex items-center justify-between text-xs font-mono text-slate-400 group-hover:text-slate-600 transition-colors">
+                <div className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors" />
+                  <span>{item.date || "N/A"}</span>
+                </div>
+
+                <div className="flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 group-hover:bg-amber-100/80 px-2.5 py-1 rounded-md transition-colors">
+                  <UserCheck className="w-3 h-3 text-amber-600" /> Volunteer
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Photo Preview Modal */}
+      {selectedImage && (
+        <div
+          onClick={() => setSelectedImage(null)}
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+        >
           <div
-            key={item.id}
-            className="group relative bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1.5 hover:border-amber-400 hover:shadow-xl hover:ring-4 hover:ring-amber-500/10"
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full bg-white rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-2xl overflow-hidden flex flex-col items-center"
           >
-            <div>
-              {/* Card Image Container with Overlay Category Badge */}
-              <div className="relative h-52 sm:h-56 w-full overflow-hidden bg-slate-100">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                
-                {/* Category Badge overlay at Top Left */}
-                <div className="absolute top-3.5 left-3.5 bg-slate-900/90 backdrop-blur-md text-white text-[10px] font-bold px-3 py-1 rounded-md shadow-md uppercase tracking-wider">
-                  {item.category}
-                </div>
-              </div>
+            <button
+              onClick={() => setSelectedImage(null)}
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors cursor-pointer"
+            >
+              <X className="w-5 h-5" />
+            </button>
 
-              {/* Card Body Content */}
-              <div className="p-6">
-                {/* Organization & Period */}
-                <div className="text-xs font-bold text-amber-700 mb-2">
-                  <span>{item.organization}</span>
-                  <span className="mx-1 text-slate-300">|</span>
-                  <span className="text-slate-400 font-medium">{item.period}</span>
-                </div>
-
-                {/* Title */}
-                <h3 className="text-lg sm:text-xl font-bold font-serif text-slate-900 group-hover:text-amber-800 transition-colors duration-300 mb-3 leading-snug">
-                  {item.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-sans mb-6">
-                  {item.description}
-                </p>
-              </div>
+            <div className="w-full max-h-[75vh] overflow-hidden rounded-2xl bg-slate-50 border border-slate-100 my-2 flex items-center justify-center">
+              <img
+                src={selectedImage.url}
+                alt={selectedImage.title}
+                className="max-w-full max-h-[70vh] object-contain rounded-xl"
+              />
             </div>
 
-            {/* Bottom Location Marker Footer */}
-            <div className="px-6 pb-6 pt-2 flex items-center gap-1.5 text-xs font-medium text-slate-400 group-hover:text-slate-600 transition-colors">
-              <MapPin className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors shrink-0" />
-              <span>{item.location}</span>
-            </div>
+            <h4 className="text-sm sm:text-base font-bold font-serif text-slate-900 text-center mt-2 px-6">
+              {selectedImage.title}
+            </h4>
           </div>
-        ))}
-      </div>
-
+        </div>
+      )}
     </div>
   );
 };

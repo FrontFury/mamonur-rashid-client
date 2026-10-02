@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import emailjs from "@emailjs/browser";
 import {
   Compass,
   MapPin,
@@ -7,6 +8,9 @@ import {
   Clock,
   Send,
   ChevronDown,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
 } from "lucide-react";
 
 const ContactBody = () => {
@@ -18,18 +22,90 @@ const ContactBody = () => {
     message: "",
   });
 
+  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState({ type: "", message: "" });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  // Validation
+  const isFormValid =
+    formData.fullName.trim() !== "" &&
+    formData.email.trim() !== "" &&
+    formData.purpose.trim() !== "" &&
+    formData.subject.trim() !== "" &&
+    formData.message.trim() !== "";
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log("Form Submitted:", formData);
+    if (!isFormValid) return;
+
+    setLoading(true);
+    setStatus({ type: "", message: "" });
+
+    // Environment variables
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    // Check if ENV variables are loaded properly
+    if (!serviceId || !templateId || !publicKey) {
+      setLoading(false);
+      setStatus({
+        type: "error",
+        message: "EmailJS configuration missing in .env file! Please restart dev server.",
+      });
+      console.error("Missing ENV variables:", { serviceId, templateId, publicKey });
+      return;
+    }
+
+    // Template params mapped with your EmailJS template fields
+    const templateParams = {
+      from_name: formData.fullName,
+      from_email: formData.email,
+      subject: `[${formData.purpose}] ${formData.subject}`,
+      message: formData.message,
+    };
+
+    try {
+      const response = await emailjs.send(
+        serviceId,
+        templateId,
+        templateParams,
+        publicKey
+      );
+
+      if (response.status === 200) {
+        setLoading(false);
+        setStatus({
+          type: "success",
+          message: "Your inquiry has been transmitted successfully! We will get back to you shortly.",
+        });
+        setFormData({
+          fullName: "",
+          email: "",
+          purpose: "MBA Academic Advising & Roadmap",
+          subject: "",
+          message: "",
+        });
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("EmailJS Submission Error:", error);
+      
+      // Detailed error message if EmailJS returns text
+      const errorMsg = error?.text || "Failed to send the message. Please check public key or service ID.";
+      setStatus({
+        type: "error",
+        message: errorMsg,
+      });
+    }
   };
 
   return (
     <div className="w-full bg-[#F8FAFC] py-12 px-4 sm:px-8 lg:px-16 xl:px-24 max-w-[1600px] mx-auto font-sans text-slate-800">
+      
       {/* Header Section */}
       <div className="pb-8 border-b border-slate-200/80 mb-10">
         <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-amber-700 mb-2">
@@ -44,11 +120,12 @@ const ContactBody = () => {
         </p>
       </div>
 
-      {/* Main Grid: Left Details & Right Inquiry Form */}
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column - Contact Cards (5 cols) */}
+        
+        {/* Left Column - Contact Details */}
         <div className="lg:col-span-5 flex flex-col gap-5">
-          {/* Mailing & Residence Address */}
+          {/* Address */}
           <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-6 transition-all duration-300 hover:bg-white hover:border-amber-300/80 hover:shadow-lg">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-slate-200/60 text-slate-600 shrink-0">
@@ -68,7 +145,7 @@ const ContactBody = () => {
             </div>
           </div>
 
-          {/* Institutional Inquiries */}
+          {/* Email */}
           <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-6 transition-all duration-300 hover:bg-white hover:border-amber-300/80 hover:shadow-lg">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-slate-200/60 text-slate-600 shrink-0">
@@ -91,7 +168,7 @@ const ContactBody = () => {
             </div>
           </div>
 
-          {/* Direct Contact Numbers */}
+          {/* Hotline */}
           <div className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-6 transition-all duration-300 hover:bg-white hover:border-amber-300/80 hover:shadow-lg">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-xl bg-slate-200/60 text-slate-600 shrink-0">
@@ -122,7 +199,7 @@ const ContactBody = () => {
             </div>
           </div>
 
-          {/* Dark MBA Advising Office Hours Banner */}
+          {/* Office Hours Banner */}
           <div className="bg-[#0F172A] text-white rounded-2xl p-6 shadow-md relative overflow-hidden mt-1">
             <div className="flex items-start justify-between gap-4">
               <div>
@@ -141,7 +218,7 @@ const ContactBody = () => {
           </div>
         </div>
 
-        {/* Right Column - Academic Inquiry Form (7 cols) */}
+        {/* Right Column - Form */}
         <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
           <h3 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 mb-1">
             Send an Academic Inquiry
@@ -150,12 +227,29 @@ const ContactBody = () => {
             Please indicate your purpose to route your message to the appropriate advisory or research schedule.
           </p>
 
+          {/* Status Message Alerts */}
+          {status.message && (
+            <div
+              className={`p-4 rounded-xl text-xs sm:text-sm flex items-center gap-3 mb-6 transition-all ${
+                status.type === "success"
+                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
+                  : "bg-red-50 text-red-800 border border-red-200"
+              }`}
+            >
+              {status.type === "success" ? (
+                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+              ) : (
+                <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+              )}
+              <span>{status.message}</span>
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            {/* Row 1: Full Name & Email */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                  Your Full Name
+                  Your Full Name <span className="text-amber-600">*</span>
                 </label>
                 <input
                   type="text"
@@ -170,7 +264,7 @@ const ContactBody = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                  Email Address
+                  Email Address <span className="text-amber-600">*</span>
                 </label>
                 <input
                   type="email"
@@ -184,10 +278,9 @@ const ContactBody = () => {
               </div>
             </div>
 
-            {/* Inquiry Purpose Dropdown */}
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                Inquiry Purpose
+                Inquiry Purpose <span className="text-amber-600">*</span>
               </label>
               <div className="relative">
                 <select
@@ -213,10 +306,9 @@ const ContactBody = () => {
               </div>
             </div>
 
-            {/* Subject Input */}
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                Subject
+                Subject <span className="text-amber-600">*</span>
               </label>
               <input
                 type="text"
@@ -229,10 +321,9 @@ const ContactBody = () => {
               />
             </div>
 
-            {/* Message Textarea */}
             <div>
               <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                Message
+                Message <span className="text-amber-600">*</span>
               </label>
               <textarea
                 name="message"
@@ -245,13 +336,32 @@ const ContactBody = () => {
               ></textarea>
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              className="mt-2 w-full py-3.5 px-6 bg-[#0F172A] hover:bg-slate-800 text-white font-semibold text-sm rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2 group"
+              disabled={!isFormValid || loading}
+              className={`mt-2 w-full py-3.5 px-6 font-semibold text-sm rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2 group ${
+                isFormValid && !loading
+                  ? "bg-[#0F172A] hover:bg-slate-800 text-white cursor-pointer active:scale-[0.99]"
+                  : "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
+              }`}
             >
-              <span>Send Academic Inquiry</span>
-              <Send className="w-4 h-4 text-amber-400 group-hover:translate-x-1 transition-transform" />
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
+                  <span>Transmitting Inquiry...</span>
+                </>
+              ) : (
+                <>
+                  <span>Send Academic Inquiry</span>
+                  <Send
+                    className={`w-4 h-4 transition-transform ${
+                      isFormValid
+                        ? "text-amber-400 group-hover:translate-x-1"
+                        : "text-slate-400"
+                    }`}
+                  />
+                </>
+              )}
             </button>
           </form>
         </div>
