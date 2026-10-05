@@ -7,99 +7,62 @@ import {
   Smartphone,
   Clock,
   Send,
-  ChevronDown,
-  Loader2,
-  CheckCircle2,
-  AlertCircle,
+  MessageSquare,
+  Check,
 } from "lucide-react";
 
 const ContactBody = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     email: "",
-    purpose: "MBA Academic Advising & Roadmap",
     subject: "",
     message: "",
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState({ type: "", message: "" });
-
-  const handleChange = (e) => {
+  const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Validation
   const isFormValid =
-    formData.fullName.trim() !== "" &&
+    formData.name.trim() !== "" &&
     formData.email.trim() !== "" &&
-    formData.purpose.trim() !== "" &&
     formData.subject.trim() !== "" &&
     formData.message.trim() !== "";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isFormValid) return;
-
-    setLoading(true);
-    setStatus({ type: "", message: "" });
-
-    // Environment variables
-    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-    // Check if ENV variables are loaded properly
-    if (!serviceId || !templateId || !publicKey) {
-      setLoading(false);
-      setStatus({
-        type: "error",
-        message: "EmailJS configuration missing in .env file! Please restart dev server.",
-      });
-      console.error("Missing ENV variables:", { serviceId, templateId, publicKey });
-      return;
-    }
-
-    // Template params mapped with your EmailJS template fields
-    const templateParams = {
-      from_name: formData.fullName,
-      from_email: formData.email,
-      subject: `[${formData.purpose}] ${formData.subject}`,
-      message: formData.message,
-    };
 
     try {
-      const response = await emailjs.send(
-        serviceId,
-        templateId,
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      };
+
+      await emailjs.send(
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         templateParams,
-        publicKey
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
       );
 
-      if (response.status === 200) {
-        setLoading(false);
-        setStatus({
-          type: "success",
-          message: "Your inquiry has been transmitted successfully! We will get back to you shortly.",
-        });
-        setFormData({
-          fullName: "",
-          email: "",
-          purpose: "MBA Academic Advising & Roadmap",
-          subject: "",
-          message: "",
-        });
-      }
-    } catch (error) {
-      setLoading(false);
-      console.error("EmailJS Submission Error:", error);
-      
-      // Detailed error message if EmailJS returns text
-      const errorMsg = error?.text || "Failed to send the message. Please check public key or service ID.";
-      setStatus({
-        type: "error",
-        message: errorMsg,
+      setIsSubmitted(true);
+
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
       });
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000);
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      alert("Failed to send message. Please try again.");
     }
   };
 
@@ -218,153 +181,103 @@ const ContactBody = () => {
           </div>
         </div>
 
-        {/* Right Column - Form */}
-        <div className="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/90 shadow-sm">
-          <h3 className="text-xl sm:text-2xl font-bold font-serif text-slate-900 mb-1">
-            Send an Academic Inquiry
-          </h3>
-          <p className="text-xs sm:text-sm text-slate-500 mb-6">
-            Please indicate your purpose to route your message to the appropriate advisory or research schedule.
-          </p>
+        {/* RIGHT COLUMN: QUICK MESSAGE FORM (5 Cols) */}
+          <div className="lg:col-span-5">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-emerald-100 shadow-sm space-y-6">
+              <div className="space-y-1">
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-600 flex items-center gap-1">
+                  <MessageSquare className="w-3.5 h-3.5" /> Direct Message
+                </span>
+                <h3 className="text-xl sm:text-2xl font-bold text-[#163A2D] font-['Playfair_Display',serif]">
+                  Send a Message
+                </h3>
+              </div>
 
-          {/* Status Message Alerts */}
-          {status.message && (
-            <div
-              className={`p-4 rounded-xl text-xs sm:text-sm flex items-center gap-3 mb-6 transition-all ${
-                status.type === "success"
-                  ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
-                  : "bg-red-50 text-red-800 border border-red-200"
-              }`}
-            >
-              {status.type === "success" ? (
-                <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
+              {isSubmitted ? (
+                <div className="p-6 rounded-xl bg-emerald-50 border border-emerald-200 text-center space-y-2">
+                  <Check className="w-10 h-10 text-emerald-600 mx-auto" />
+                  <h4 className="font-bold text-[#163A2D]">Message Sent!</h4>
+                  <p className="text-xs text-gray-600">
+                    Thank you for getting in touch. I will respond as soon as
+                    possible.
+                  </p>
+                </div>
               ) : (
-                <AlertCircle className="w-5 h-5 text-red-600 shrink-0" />
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Your Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      placeholder="Tanvir Ahmed"
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none text-xs sm:text-sm transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Your Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      placeholder="tanvir.ahmed@gmail.com"
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none text-xs sm:text-sm transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      name="subject"
+                      required
+                      value={formData.subject}
+                      onChange={handleInputChange}
+                      placeholder="Research Collaboration / Query"
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none text-xs sm:text-sm transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Message
+                    </label>
+                    <textarea
+                      name="message"
+                      rows={4}
+                      required
+                      value={formData.message}
+                      onChange={handleInputChange}
+                      placeholder="Write your message here..."
+                      className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 outline-none text-xs sm:text-sm transition-all resize-none"
+                    ></textarea>
+                  </div>
+
+                  {/* Condition: Show button ONLY if all fields are valid */}
+                  {isFormValid && (
+                    <button
+                      type="submit"
+                      className="w-full py-3 px-6 rounded-xl bg-[#163A2D] text-amber-300 font-bold text-xs sm:text-sm hover:bg-[#0C2219] transition-all flex items-center justify-center gap-2 shadow-sm"
+                    >
+                      <span>Send Message</span>
+                      <Send className="w-4 h-4" />
+                    </button>
+                  )}
+                </form>
               )}
-              <span>{status.message}</span>
             </div>
-          )}
-
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                  Your Full Name <span className="text-amber-600">*</span>
-                </label>
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="e.g. Sarah Ahmed"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50/50 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-500/10 transition-all"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                  Email Address <span className="text-amber-600">*</span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="e.g. s.ahmed@student.diit.info"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50/50 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-500/10 transition-all"
-                  required
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                Inquiry Purpose <span className="text-amber-600">*</span>
-              </label>
-              <div className="relative">
-                <select
-                  name="purpose"
-                  value={formData.purpose}
-                  onChange={handleChange}
-                  className="w-full appearance-none px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50/50 text-xs sm:text-sm text-slate-800 focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-500/10 transition-all pr-10 cursor-pointer"
-                >
-                  <option value="MBA Academic Advising & Roadmap">
-                    MBA Academic Advising & Roadmap
-                  </option>
-                  <option value="Research Collaboration & Empirical Inquiries">
-                    Research Collaboration & Empirical Inquiries
-                  </option>
-                  <option value="Student Mentorship & Thesis Guidance">
-                    Student Mentorship & Thesis Guidance
-                  </option>
-                  <option value="General Institutional Inquiry">
-                    General Institutional Inquiry
-                  </option>
-                </select>
-                <ChevronDown className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                Subject <span className="text-amber-600">*</span>
-              </label>
-              <input
-                type="text"
-                name="subject"
-                placeholder="e.g. Scheduling MBA 3rd Semester Course Advising"
-                value={formData.subject}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50/50 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-500/10 transition-all"
-                required
-              />
-            </div>
-
-            <div>
-              <label className="block text-xs font-semibold text-slate-600 mb-1.5">
-                Message <span className="text-amber-600">*</span>
-              </label>
-              <textarea
-                name="message"
-                rows="4"
-                placeholder="Provide brief context regarding your academic inquiry, cohort ID, or research interest..."
-                value={formData.message}
-                onChange={handleChange}
-                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-50/50 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:bg-white focus:ring-2 focus:ring-amber-500/10 transition-all resize-y"
-                required
-              ></textarea>
-            </div>
-
-            <button
-              type="submit"
-              disabled={!isFormValid || loading}
-              className={`mt-2 w-full py-3.5 px-6 font-semibold text-sm rounded-xl shadow-md transition-all duration-300 flex items-center justify-center gap-2 group ${
-                isFormValid && !loading
-                  ? "bg-[#0F172A] hover:bg-slate-800 text-white cursor-pointer active:scale-[0.99]"
-                  : "bg-slate-200 text-slate-400 cursor-not-allowed shadow-none"
-              }`}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin text-amber-400" />
-                  <span>Transmitting Inquiry...</span>
-                </>
-              ) : (
-                <>
-                  <span>Send Academic Inquiry</span>
-                  <Send
-                    className={`w-4 h-4 transition-transform ${
-                      isFormValid
-                        ? "text-amber-400 group-hover:translate-x-1"
-                        : "text-slate-400"
-                    }`}
-                  />
-                </>
-              )}
-            </button>
-          </form>
-        </div>
+          </div>
       </div>
     </div>
   );
