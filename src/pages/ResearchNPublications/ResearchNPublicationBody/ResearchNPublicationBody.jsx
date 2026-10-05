@@ -80,7 +80,7 @@ const ResearchNPublicationBody = () => {
             Research & Publications
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl">
-            Empirical and systematic inquiries in Islamic microfinance, transport sustainability, and macroeconomic crisis response.
+            Research is the quiet labor of today that becomes the foundation of tomorrow.
           </p>
         </div>
 
@@ -125,7 +125,7 @@ const ResearchNPublicationBody = () => {
           <div className="flex items-center gap-2 mb-6">
             <BookOpen className="w-5 h-5 text-slate-700" />
             <h3 className="text-lg sm:text-xl font-bold font-serif text-slate-900">
-              Published Refereed Articles & Book Chapters
+              Published articles and research papers
             </h3>
           </div>
 

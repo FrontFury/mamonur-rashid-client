@@ -29,7 +29,7 @@ const Home = () => {
         }}
       >
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-[#0F172A]/60 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-[#0F172A]/10 backdrop-blur-[1px]" />
       </section>
 
       {/* ==========================================
@@ -59,10 +59,10 @@ const Home = () => {
 
             {/* Professional Overview Paragraph */}
             <p className="text-slate-600 text-sm sm:text-base lg:text-lg leading-relaxed mb-6 w-full">
-              Professional overview highlighting commitment to academic
-              excellence, advisory roles, and financial research. Dedicated to
-              advancing finance, banking methodologies, Islamic microfinance,
-              and advising next-generation MBA scholars.
+              Passionate about bridging research and practice in business
+              finance and sustainability reporting. Committed to generating and
+              disseminating new knowledge, while guiding emerging business
+              graduates and scholars toward academic and professional success.
             </p>
 
             {/* ==========================================
@@ -190,10 +190,10 @@ const Home = () => {
               {/* Stat 1 */}
               <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200/80 shadow-sm">
                 <span className="block text-lg sm:text-2xl font-bold text-amber-600 mb-0.5">
-                  1st
+                  1st Merit
                 </span>
                 <span className="block text-[11px] sm:text-xs text-slate-500 leading-snug">
-                  National University Merit (MBA)
+                  MBA Class of 2021, National University Bangladesh·
                 </span>
               </div>
 
@@ -210,7 +210,7 @@ const Home = () => {
               {/* Stat 3 */}
               <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200/80 shadow-sm">
                 <span className="block text-lg sm:text-2xl font-bold text-slate-900 mb-0.5">
-                  4+
+                  5+
                 </span>
                 <span className="block text-[11px] sm:text-xs text-slate-500 leading-snug">
                   Peer-Reviewed Papers & Books
@@ -220,7 +220,7 @@ const Home = () => {
               {/* Stat 4 */}
               <div className="bg-white p-3.5 sm:p-4 rounded-xl border border-slate-200/80 shadow-sm">
                 <span className="block text-lg sm:text-2xl font-bold text-slate-900 mb-0.5">
-                  2021
+                  2021 to till
                 </span>
                 <span className="block text-[11px] sm:text-xs text-slate-500 leading-snug">
                   Lecturer & Advisor DIIT

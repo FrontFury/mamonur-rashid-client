@@ -170,10 +170,10 @@ const ContactBody = () => {
                   MBA Advising Office Hours
                 </h4>
                 <p className="text-xs sm:text-sm font-semibold text-amber-300 mb-1">
-                  Saturday to Wednesday: 09:30 AM – 04:30 PM
+                  Sunday to Thursday: 09:30 AM – 04:30 PM
                 </p>
                 <p className="text-xs text-slate-400">
-                  Faculty Room, Department of Business Administration, DIIT.
+                  MBA Faculty Room, Department of Business Administration, DIIT
                 </p>
               </div>
               <Clock className="w-5 h-5 text-amber-400 shrink-0" />
