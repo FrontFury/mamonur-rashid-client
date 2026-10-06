@@ -39,10 +39,6 @@ export const router = createBrowserRouter([
         element: <AcademicBackground/>
       },
       {
-        path: "skills",
-        element: <Skills/>
-      },
-      {
         path: "honors-awards",
         element: <HonorsNAwards/>
       },

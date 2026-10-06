@@ -9,10 +9,9 @@ const Navbar = () => {
   const navItems = [
     { id: "home", label: "Home", path: "/" },
     { id: "research", label: "Research & Publications", path: "/research-publications" },
+    { id: "academics", label: "Academic Credentials", path: "/academic-background" },
     { id: "experience", label: "Professional Experience", path: "/professional-experience" },
     { id: "development", label: "Professional Development", path: "/professional-development" },
-    { id: "academics", label: "Academic", path: "/academic-background" },
-    { id: "skills", label: "Skills", path: "/skills" },
     { id: "awards", label: "Honors & Awards", path: "/honors-awards" },
     { id: "csr", label: "Voluntary Work", path: "/csr-voluntary-work" },
     { id: "gallery", label: "Gallery", path: "/gallery" },

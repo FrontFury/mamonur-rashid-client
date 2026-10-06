@@ -41,7 +41,7 @@ const DevelopmentBody = () => {
             <Award className="w-4 h-4 text-amber-600" />
             <span>Continuous Pedagogical & Executive Training</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-bold font-serif text-slate-900 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold font-serif text-slate-900 tracking-tight">
             Professional Development
           </h2>
           <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl">
