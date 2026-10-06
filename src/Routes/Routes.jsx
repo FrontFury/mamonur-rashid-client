@@ -5,7 +5,6 @@ import ResearchNPublications from "../pages/ResearchNPublications/ResearchNPubli
 import ProfessionalExperience from "../pages/ProfessionalExperience/ProfessionalExperience/ProfessionalExperience";
 import ProfessionalDevelopment from "../pages/ProfessionalDevelopment/ProfessionalDevelopment/ProfessionalDevelopment";
 import AcademicBackground from "../pages/AcademicBackground/AcademicBackground/AcademicBackground";
-import Skills from "../pages/Skills/Skills/Skills";
 import HonorsNAwards from "../pages/HonorsNAwards/HonorsNAwards/HonorsNAwards";
 import VoluntaryWork from "../pages/VoluntaryWork/VoluntaryWork/VoluntaryWork";
 import Gallery from "../pages/Gallery/Gallery/Gallery";
