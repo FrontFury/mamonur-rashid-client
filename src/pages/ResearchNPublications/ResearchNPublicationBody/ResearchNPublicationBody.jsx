@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import useAxiosSecure from "../../../hook/useAxiosSecure"; 
+import useAxiosSecure from "../../../hook/useAxiosSecure";
 import {
   AlignLeft,
   ExternalLink,
   BookOpen,
   Hourglass,
-  Compass,
   Calendar,
   X,
   FileText,
   AlertCircle,
   ZoomIn,
+  Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
 
 // Static In-Progress Research Data
@@ -43,10 +44,10 @@ const inProgressData = [
 const ResearchNPublicationBody = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [selectedAbstract, setSelectedAbstract] = useState(null);
-  const [selectedImage, setSelectedImage] = useState(null); // ইমেজ মোডালের স্টেট
+  const [selectedImage, setSelectedImage] = useState(null);
   const axiosSecure = useAxiosSecure();
 
-  // TanStack Query দিয়ে API থেকে ডাটা ফেচ
+  // TanStack Query API Fetching
   const {
     data: publications = [],
     isLoading,
@@ -68,68 +69,81 @@ const ResearchNPublicationBody = () => {
   const showInProgress = activeTab === "All" || activeTab === "In-Progress";
 
   return (
-    <div className="w-full bg-[#F8FAFC] py-12 px-4 sm:px-8 lg:px-16 xl:px-24 max-w-[1600px] mx-auto font-sans text-slate-800">
-      {/* Top Header & Filter Tab Navigation */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-8 border-b border-slate-200 mb-10">
-        <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-amber-700 mb-2">
-            <Compass className="w-4 h-4 text-amber-600" />
-            <span>Peer-Reviewed Contributions</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-bold font-serif text-slate-900 tracking-tight">
-            Research & Publications
-          </h2>
-          <p className="text-slate-500 text-sm sm:text-base mt-1.5 max-w-2xl">
-            Research is the quiet labor of today that becomes the foundation of tomorrow.
-          </p>
-        </div>
+    <div className="w-full bg-slate-50/50 py-12 px-4 sm:px-8 lg:px-16 xl:px-24 max-w-[1500px] mx-auto font-sans text-slate-800 selection:bg-emerald-100 selection:text-emerald-900">
+      
+      {/* ==========================================
+          HEADER SECTION (CLEAN & EYE-CATCHING)
+      ========================================== */}
+      <div className="relative bg-white rounded-3xl p-8 sm:p-10 mb-10 border border-slate-200/80 shadow-sm overflow-hidden">
+        {/* Subtle Decorative Background Glow */}
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/2 w-64 h-64 bg-amber-500/5 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Filter Tabs */}
-        <div className="bg-slate-200/60 p-1 rounded-xl flex items-center gap-1 self-start md:self-auto border border-slate-200 shrink-0">
-          <button
-            onClick={() => setActiveTab("All")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              activeTab === "All"
-                ? "bg-white text-slate-900 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            All <span className="opacity-75">({totalCount})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("Published Works")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              activeTab === "Published Works"
-                ? "bg-white text-slate-900 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            Published Works <span className="opacity-75">({publishedCount})</span>
-          </button>
-          <button
-            onClick={() => setActiveTab("In-Progress")}
-            className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-              activeTab === "In-Progress"
-                ? "bg-white text-slate-900 shadow-sm"
-                : "text-slate-600 hover:text-slate-900"
-            }`}
-          >
-            In-Progress <span className="opacity-75">({inProgressCount})</span>
-          </button>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-xs font-semibold text-emerald-800 uppercase tracking-wider mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+              <span>Peer-Reviewed Academic Portfolio</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight font-serif text-slate-900">
+              Research & Publications
+            </h2>
+            <p className="text-slate-500 text-sm sm:text-base mt-2 max-w-2xl font-normal leading-relaxed">
+              Exploring sustainable economics, Islamic finance, and policy transformations.
+            </p>
+          </div>
+
+          {/* Interactive Pill Tabs */}
+          <div className="bg-slate-100/80 p-1.5 rounded-2xl flex items-center gap-1 self-start md:self-auto border border-slate-200/60 shrink-0">
+            <button
+              onClick={() => setActiveTab("All")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                activeTab === "All"
+                  ? "bg-slate-900 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              All <span className="opacity-60 ml-1">({totalCount})</span>
+            </button>
+            <button
+              onClick={() => setActiveTab("Published Works")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                activeTab === "Published Works"
+                  ? "bg-emerald-700 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              Published <span className="opacity-60 ml-1">({publishedCount})</span>
+            </button>
+            <button
+              onClick={() => setActiveTab("In-Progress")}
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all duration-200 cursor-pointer ${
+                activeTab === "In-Progress"
+                  ? "bg-amber-600 text-white shadow-sm"
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/60"
+              }`}
+            >
+              In-Progress <span className="opacity-60 ml-1">({inProgressCount})</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* SECTION 1: PUBLISHED ARTICLES (API Data) */}
+      {/* ==========================================
+          SECTION 1: PUBLISHED WORKS
+      ========================================== */}
       {showPublished && (
-        <div className="mb-14">
+        <div className="mb-12">
           <div className="flex items-center gap-2 mb-6">
-            <BookOpen className="w-5 h-5 text-slate-700" />
-            <h3 className="text-lg sm:text-xl font-bold font-serif text-slate-900">
-              Published articles and research papers
+            <div className="p-2 rounded-xl bg-emerald-100/80 text-emerald-800">
+              <BookOpen className="w-5 h-5" />
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold font-serif text-slate-900">
+              Published Papers
             </h3>
           </div>
 
-          {/* Loading Skeleton */}
+          {/* Skeleton Loader */}
           {isLoading && (
             <div className="space-y-4">
               {[1, 2].map((n) => (
@@ -137,11 +151,11 @@ const ResearchNPublicationBody = () => {
                   key={n}
                   className="bg-white p-6 rounded-2xl border border-slate-200 animate-pulse flex flex-col md:flex-row gap-6"
                 >
-                  <div className="w-full md:w-48 h-32 bg-slate-200 rounded-xl shrink-0" />
+                  <div className="w-full md:w-44 h-32 bg-slate-100 rounded-xl shrink-0" />
                   <div className="flex-1 space-y-3">
-                    <div className="h-4 bg-slate-200 rounded w-1/4" />
-                    <div className="h-6 bg-slate-200 rounded w-3/4" />
-                    <div className="h-4 bg-slate-200 rounded w-1/2" />
+                    <div className="h-4 bg-slate-100 rounded w-1/4" />
+                    <div className="h-6 bg-slate-100 rounded w-3/4" />
+                    <div className="h-4 bg-slate-100 rounded w-1/2" />
                   </div>
                 </div>
               ))}
@@ -150,22 +164,22 @@ const ResearchNPublicationBody = () => {
 
           {/* Error State */}
           {isError && (
-            <div className="p-6 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-3 text-red-700 text-sm">
-              <AlertCircle className="w-5 h-5 shrink-0" />
+            <div className="p-6 bg-rose-50 border border-rose-200 rounded-2xl flex items-center gap-3 text-rose-800 text-sm">
+              <AlertCircle className="w-5 h-5 shrink-0 text-rose-600" />
               <span>Failed to load publications. {error?.message}</span>
             </div>
           )}
 
           {/* Empty State */}
           {!isLoading && !isError && publications.length === 0 && (
-            <div className="p-8 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-sm">
+            <div className="p-10 text-center bg-white rounded-2xl border border-slate-200 text-slate-500 text-sm">
               No published articles found.
             </div>
           )}
 
-          {/* Publications List */}
+          {/* Publication List */}
           {!isLoading && !isError && publications.length > 0 && (
-            <div className="space-y-6">
+            <div className="space-y-5">
               {publications.map((paper) => {
                 const year = paper.publicationDate
                   ? new Date(paper.publicationDate).getFullYear()
@@ -177,12 +191,12 @@ const ResearchNPublicationBody = () => {
                 return (
                   <div
                     key={paper._id}
-                    className="relative bg-white rounded-2xl p-5 sm:p-7 border border-slate-200/80 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group flex flex-col md:flex-row gap-6 items-start"
+                    className="group relative bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col md:flex-row gap-6 items-start overflow-hidden"
                   >
-                    {/* Left Accent Bar */}
-                    <div className="w-1.5 h-full bg-slate-800 absolute left-0 top-0 rounded-l-2xl group-hover:bg-amber-600 transition-colors" />
+                    {/* Visual Accent Line */}
+                    <div className="w-1.5 h-full bg-emerald-600 absolute left-0 top-0 group-hover:bg-amber-500 transition-colors duration-300" />
 
-                    {/* Cover Image (Clickable for Modal) */}
+                    {/* Image Preview Trigger */}
                     {paper.coverImage && (
                       <div
                         onClick={() =>
@@ -191,59 +205,58 @@ const ResearchNPublicationBody = () => {
                             title: paper.title,
                           })
                         }
-                        className="relative w-full md:w-44 h-36 rounded-xl overflow-hidden bg-slate-100 border border-slate-200/60 shrink-0 self-center md:self-start cursor-pointer group/img"
+                        className="relative w-full md:w-44 h-32 rounded-xl overflow-hidden bg-slate-100 border border-slate-200 shrink-0 cursor-pointer group/img"
                       >
                         <img
                           src={paper.coverImage}
                           alt={paper.title}
-                          className="w-full h-full object-cover group-hover/img:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover/img:scale-105 transition-transform duration-300"
                         />
-                        {/* Hover Overlay with Zoom Icon */}
-                        <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center text-white gap-1.5 text-xs font-semibold">
-                          <ZoomIn className="w-4 h-4" />
-                          <span>View Image</span>
+                        <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 flex items-center justify-center text-white gap-1 text-xs font-bold backdrop-blur-[2px]">
+                          <ZoomIn className="w-4 h-4 text-amber-300" />
+                          <span>Preview</span>
                         </div>
                       </div>
                     )}
 
-                    {/* Paper Content */}
+                    {/* Main Details */}
                     <div className="flex-1 w-full flex flex-col justify-between">
                       <div>
-                        {/* Badges */}
-                        <div className="flex flex-wrap items-center gap-2 mb-3">
-                          <span className="bg-slate-900 text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
-                            Journal
+                        {/* Header Badges */}
+                        <div className="flex flex-wrap items-center gap-2 mb-2.5">
+                          <span className="bg-emerald-100 text-emerald-900 border border-emerald-200/80 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            Journal Article
                           </span>
-                          <span className="bg-slate-100 text-slate-600 border border-slate-200 text-[11px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
-                            <Calendar className="w-3 h-3" /> {year}
+                          <span className="bg-slate-100 text-slate-700 text-[11px] font-semibold px-2.5 py-0.5 rounded-full inline-flex items-center gap-1">
+                            <Calendar className="w-3 h-3 text-slate-400" /> {year}
                           </span>
                           {paper.journalName && (
-                            <span className="bg-amber-50 text-amber-800 border border-amber-200/80 text-[11px] font-medium px-2.5 py-0.5 rounded-full">
+                            <span className="text-xs font-semibold text-slate-500 italic">
                               {paper.journalName}
                             </span>
                           )}
                         </div>
 
-                        {/* Title */}
-                        <h4 className="text-lg sm:text-xl font-bold font-serif text-slate-900 hover:text-amber-700 transition-colors leading-snug mb-2">
+                        {/* Article Title */}
+                        <h4 className="text-lg sm:text-xl font-bold font-serif text-slate-900 group-hover:text-emerald-800 transition-colors leading-snug mb-2">
                           {paper.title}
                         </h4>
 
                         {/* Authors */}
-                        <p className="text-xs sm:text-sm text-slate-600 font-sans mb-4 leading-relaxed">
-                          <span className="font-semibold text-slate-700">Authors:</span>{" "}
+                        <p className="text-xs sm:text-sm text-slate-600 mb-4 leading-relaxed">
+                          <span className="font-semibold text-slate-800">Authors:</span>{" "}
                           {authorsList}
                         </p>
                       </div>
 
-                      {/* Action Bar */}
-                      <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-slate-100 text-xs font-bold text-slate-600">
+                      {/* Interactive Bottom Actions */}
+                      <div className="flex flex-wrap items-center gap-4 pt-3 border-t border-slate-100 text-xs font-bold">
                         {paper.abstract && (
                           <button
                             onClick={() => setSelectedAbstract(paper)}
-                            className="inline-flex items-center gap-1.5 hover:text-amber-700 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 text-emerald-700 hover:text-emerald-900 transition-colors cursor-pointer"
                           >
-                            <AlignLeft className="w-3.5 h-3.5 text-slate-400" />
+                            <AlignLeft className="w-4 h-4 text-emerald-600" />
                             <span>Read Abstract</span>
                           </button>
                         )}
@@ -253,10 +266,10 @@ const ResearchNPublicationBody = () => {
                             href={paper.paperUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1.5 hover:text-amber-700 transition-colors"
+                            className="inline-flex items-center gap-1 text-slate-700 hover:text-amber-700 transition-colors ml-auto"
                           >
-                            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                            <span>View Journal / DOI</span>
+                            <span>View Full Paper</span>
+                            <ArrowUpRight className="w-4 h-4 text-amber-600" />
                           </a>
                         )}
                       </div>
@@ -269,28 +282,34 @@ const ResearchNPublicationBody = () => {
         </div>
       )}
 
-      {/* SECTION 2: CURRENT IN-PROGRESS RESEARCH PROJECTS */}
+      {/* ==========================================
+          SECTION 2: IN-PROGRESS PROJECTS
+      ========================================== */}
       {showInProgress && (
         <div>
           <div className="flex items-center gap-2 mb-6">
-            <Hourglass className="w-5 h-5 text-amber-700" />
-            <h3 className="text-lg sm:text-xl font-bold font-serif text-slate-900">
-              Current In-Progress Research Projects
+            <div className="p-2 rounded-xl bg-amber-100/80 text-amber-800">
+              <Hourglass className="w-5 h-5" />
+            </div>
+            <h3 className="text-xl sm:text-2xl font-bold font-serif text-slate-900">
+              In-Progress Research
             </h3>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {inProgressData.map((project) => (
               <div
                 key={project.id}
-                className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col justify-between"
+                className="group relative bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between overflow-hidden"
               >
+                <div className="w-1.5 h-full bg-amber-500 absolute left-0 top-0 group-hover:bg-emerald-600 transition-colors duration-300" />
+
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">
-                    <span className="bg-amber-100/80 border border-amber-300/80 text-amber-900 text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md">
+                    <span className="bg-amber-50 border border-amber-200 text-amber-900 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                       {project.statusBadge}
                     </span>
-                    <span className="text-[11px] font-medium text-slate-400">
+                    <span className="text-[11px] font-semibold text-slate-400">
                       {project.typeBadge}
                     </span>
                   </div>
@@ -299,14 +318,16 @@ const ResearchNPublicationBody = () => {
                     {project.title}
                   </h4>
 
-                  <p className="text-xs sm:text-sm text-slate-500 leading-relaxed mb-6 font-sans">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed mb-6 font-normal">
                     {project.description}
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-slate-100 flex items-center justify-between text-xs">
                   <span className="text-slate-400 font-medium">{project.tag}</span>
-                  <span className="text-amber-800 font-semibold">{project.stage}</span>
+                  <span className="text-emerald-800 font-semibold bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100/80">
+                    {project.stage}
+                  </span>
                 </div>
               </div>
             ))}
@@ -314,20 +335,22 @@ const ResearchNPublicationBody = () => {
         </div>
       )}
 
-      {/* 1. ABSTRACT MODAL */}
+      {/* ==========================================
+          ABSTRACT MODAL
+      ========================================== */}
       {selectedAbstract && (
-        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl border border-slate-100 max-h-[85vh] flex flex-col">
+        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative shadow-2xl border border-slate-200 max-h-[85vh] flex flex-col">
             <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-100">
-              <div className="flex items-center gap-2 text-amber-700">
-                <FileText className="w-5 h-5" />
+              <div className="flex items-center gap-2 text-emerald-800">
+                <FileText className="w-5 h-5 text-emerald-600" />
                 <span className="text-xs font-bold uppercase tracking-wider">
-                  Abstract Overview
+                  Publication Abstract
                 </span>
               </div>
               <button
                 onClick={() => setSelectedAbstract(null)}
-                className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                className="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -337,13 +360,11 @@ const ResearchNPublicationBody = () => {
               <h3 className="text-lg sm:text-xl font-serif font-bold text-slate-900 leading-snug">
                 {selectedAbstract.title}
               </h3>
-              <p className="text-xs text-slate-500">
-                <span className="font-semibold text-slate-700">Journal:</span>{" "}
-                {selectedAbstract.journalName} |{" "}
-                <span className="font-semibold text-slate-700">Published:</span>{" "}
-                {selectedAbstract.publicationDate}
+              <p className="text-xs text-slate-400">
+                <span className="font-semibold text-slate-600">Journal:</span>{" "}
+                {selectedAbstract.journalName || "N/A"}
               </p>
-              <div className="pt-2 text-slate-600 text-xs sm:text-sm leading-relaxed whitespace-pre-line font-sans bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div className="pt-2 text-slate-700 text-xs sm:text-sm leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-2xl border border-slate-200/60">
                 {selectedAbstract.abstract}
               </div>
             </div>
@@ -351,7 +372,7 @@ const ResearchNPublicationBody = () => {
             <div className="pt-3 border-t border-slate-100 flex justify-end gap-3">
               <button
                 onClick={() => setSelectedAbstract(null)}
-                className="px-5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-colors cursor-pointer"
               >
                 Close
               </button>
@@ -360,9 +381,9 @@ const ResearchNPublicationBody = () => {
                   href={selectedAbstract.paperUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs transition-colors inline-flex items-center gap-1.5"
+                  className="px-4 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs transition-colors inline-flex items-center gap-1.5 shadow-sm"
                 >
-                  <span>View Full Article</span>
+                  <span>View Journal Link</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </a>
               )}
@@ -371,17 +392,18 @@ const ResearchNPublicationBody = () => {
         </div>
       )}
 
-      {/* 2. IMAGE PREVIEW LIGHTBOX MODAL */}
+      {/* ==========================================
+          IMAGE PREVIEW LIGHTBOX MODAL
+      ========================================== */}
       {selectedImage && (
         <div
           onClick={() => setSelectedImage(null)}
-          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6 animate-fadeIn"
+          className="fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
         >
           <div
-            onClick={(e) => e.stopPropagation()} // মোডালের ভেতর ক্লিক করলে যাতে বন্ধ না হয়ে যায়
-            className="relative max-w-4xl w-full bg-slate-900 rounded-3xl p-3 sm:p-4 border border-slate-800 shadow-2xl overflow-hidden flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+            className="relative max-w-4xl w-full bg-slate-900 rounded-3xl p-4 border border-slate-800 shadow-2xl flex flex-col items-center"
           >
-            {/* Close Button */}
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-4 right-4 z-10 p-2 rounded-full bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors cursor-pointer border border-slate-700"
@@ -389,7 +411,6 @@ const ResearchNPublicationBody = () => {
               <X className="w-5 h-5" />
             </button>
 
-            {/* Image Preview */}
             <div className="w-full max-h-[75vh] overflow-hidden rounded-2xl flex items-center justify-center bg-black/40">
               <img
                 src={selectedImage.url}
@@ -398,9 +419,8 @@ const ResearchNPublicationBody = () => {
               />
             </div>
 
-            {/* Caption */}
             {selectedImage.title && (
-              <p className="mt-3 text-center text-xs sm:text-sm text-slate-300 font-serif max-w-xl px-4">
+              <p className="mt-4 text-center text-xs sm:text-sm text-slate-300 font-serif max-w-xl px-4">
                 {selectedImage.title}
               </p>
             )}
